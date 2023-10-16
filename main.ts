@@ -26,6 +26,43 @@ export default class FileIndicatorsPlugin extends Plugin {
         
         this.loadIndicators();
 
+        this.registerEvent(this.app.workspace.on("file-menu", (menu, file) => {
+            const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == file.path);
+
+            if(!indicator) {
+                menu.addItem(item => item
+                    .setTitle("Add indicator")
+                    .setIcon("plus")
+                    .onClick(async () => {
+                        const indicator = {
+                            dataPath: file.path,
+                            color: this.settings.defaultColor,
+                            shape: this.settings.defaultShape,
+                        };
+        
+                        this.addIndicatorCSS(indicator);
+                        this.settings.indicators.push(indicator);
+                        await this.saveSettings();
+                    }));
+            } else {
+                menu.addItem(item => item
+                    .setTitle("Remove indicator")
+                    .setIcon("minus")
+                    .onClick(async () => {
+                        const indicator = {
+                            dataPath: file.path,
+                            color: this.settings.defaultColor,
+                            shape: this.settings.defaultShape,
+                        };
+        
+                        this.removeIndicatorCSS(indicator);
+                        const index = this.settings.indicators.findIndex((i) => i.dataPath == indicator.dataPath);
+                        this.settings.indicators.remove(this.settings.indicators[index])
+                        await this.saveSettings();
+                    }));
+            }
+        }));
+
 		this.addSettingTab(new FileIndicatorsSettingTab(this.app, this));
 	}
 
