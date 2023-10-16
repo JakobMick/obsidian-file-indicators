@@ -1,7 +1,7 @@
 {
 	"name": "obsidian-file-indicators",
 	"version": "1.0.0",
-	"description": "This plugin adds colorful indicators to your file explorer.",
+	"description": "Add costum indicators to your file explorer.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

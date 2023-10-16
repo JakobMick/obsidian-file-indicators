@@ -3,7 +3,7 @@
 	"name": "File Indicators",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "This plugin adds colorful indicators to your file explorer.",
+	"description": "Add costum indicators to your file explorer.",
 	"author": "Jakob",
 	"authorUrl": "https://obsidian.md",
 	"isDesktopOnly": false
