@@ -1,0 +1,39 @@
+:root {
+    --indicator-color: --color-accent;
+}
+
+.file-indicators-list {
+    border-top: none;
+}
+
+.file-indicators-list .setting-item-info {
+    display: none;
+}
+
+.file-indicators-list input[type="text"] {
+    flex: 1;
+}
+
+.indicator::before {
+    content: "";
+    background-color: var(--indicator-color);
+    display: inline-block;
+    width: 0.75em;
+    height: 0.75em;
+    margin-inline-end: var(--size-2-3);
+    -moz-border-radius: 7.5px;
+    -webkit-border-radius: 7.5px;
+    border-radius: 7.5px;
+}
+
+.indicator.indicator-squircle::before {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.indicator.indicator-square::before {
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+}
