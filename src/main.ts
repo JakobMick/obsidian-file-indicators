@@ -20,8 +20,10 @@ export default class FileIndicatorsPlugin extends Plugin {
 
 	async onload() {
 		await this.loadSettings();
-        
-        this.loadIndicators();
+
+		this.app.workspace.onLayoutReady(() => {
+			setTimeout(() => this.loadIndicators(), 0);
+		});
 
         this.registerEvent(this.app.workspace.on("file-menu", (menu, file) => {
             const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == file.path);
