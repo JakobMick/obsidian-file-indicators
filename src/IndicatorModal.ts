@@ -29,7 +29,7 @@ export default class IndicatorModal extends Modal {
         this.contentEl.addClass('indicator-modal-content');
         
         const setting = new Setting(this.contentEl);
-        setting.setClass('file-indicators-list');
+        setting.setClass('indicator-list-item');
         setting.setClass('indicator-modal-item');
 
         setting.addColorPicker(colorpicker => colorpicker

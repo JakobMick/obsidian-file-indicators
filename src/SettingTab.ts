@@ -63,7 +63,7 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
     async addIndicatorListOption(containerEl: HTMLElement, indicator: Indicator) {
         const indicatorIndex = this.plugin.settings.indicators.indexOf(indicator);
         const setting = new Setting(containerEl)
-        setting.setClass('file-indicators-list')
+        setting.setClass('indicator-list-item')
 
         setting.addColorPicker(colorpicker => colorpicker
             .setValue(indicator.color)

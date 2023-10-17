@@ -2,15 +2,15 @@
     --indicator-color: --color-accent;
 }
 
-.file-indicators-list {
+.indicator-list-item {
     border-top: none;
 }
 
-.file-indicators-list .setting-item-info {
+.indicator-list-item .setting-item-info {
     display: none;
 }
 
-.file-indicators-list input[type="text"] {
+.indicator-list-item input[type="text"] {
     flex: 1;
 }
 
