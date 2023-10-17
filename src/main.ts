@@ -1,6 +1,7 @@
 import { App, Plugin, PluginSettingTab, Setting, } from 'obsidian';
 
 import Indicator from './indicator';
+import IndicatorModal, { IndicatorModalAction } from './IndicatorModal';
 import FileIndicatorsSettingTab from './SettingTab';
 
 interface FileIndicatorsSettings {
@@ -39,21 +40,17 @@ export default class FileIndicatorsPlugin extends Plugin {
                             shape: this.settings.defaultShape,
                         };
         
-                        this.addIndicator(indicator);
+						new IndicatorModal(this, indicator).open();
                     }));
             } else {
                 menu.addItem(item => item
+                    .setTitle("Edit indicator")
+                    .setIcon("pencil")
+                    .onClick(() => new IndicatorModal(this, indicator, IndicatorModalAction.EDIT).open()));
+                menu.addItem(item => item
                     .setTitle("Remove indicator")
                     .setIcon("minus")
-                    .onClick(async () => {
-                        const indicator = {
-                            dataPath: file.path,
-                            color: this.settings.defaultColor,
-                            shape: this.settings.defaultShape,
-                        };
-        
-                        this.removeIndicator(indicator);
-                    }));
+                    .onClick(async () => await this.removeIndicator(indicator)));
             }
         }));
 
