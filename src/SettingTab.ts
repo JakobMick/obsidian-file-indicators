@@ -1,4 +1,4 @@
-import { App, PluginSettingTab, Setting, } from 'obsidian';
+import { App, Platform, PluginSettingTab, Setting } from 'obsidian';
 
 import FileIndicatorsPlugin from './main';
 import Indicator from './indicator';
@@ -55,13 +55,12 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
             });
         })
 
-        this.plugin.settings.indicators.forEach(indicator => {
-            this.addIndicatorListOption(containerEl, indicator);
+        this.plugin.settings.indicators.forEach((indicator, index) => {
+            this.addIndicatorListOption(containerEl, indicator, index);
         });
 	}
 
-    async addIndicatorListOption(containerEl: HTMLElement, indicator: Indicator) {
-        const indicatorIndex = this.plugin.settings.indicators.indexOf(indicator);
+    async addIndicatorListOption(containerEl: HTMLElement, indicator: Indicator, index: number | undefined = undefined) {
         const setting = new Setting(containerEl)
         setting.setClass('indicator-list-item')
 
@@ -70,9 +69,9 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
             .onChange(async (value) => {
                 this.plugin.removeIndicatorCSS(indicator);
 
-                if (indicatorIndex !== -1) {
-                    this.plugin.settings.indicators[indicatorIndex].color = value.toString();
-                    this.plugin.addIndicatorCSS(this.plugin.settings.indicators[indicatorIndex]);
+                if (index !== undefined) {
+                    this.plugin.settings.indicators[index].color = value.toString();
+                    this.plugin.addIndicatorCSS(this.plugin.settings.indicators[index]);
                 }
 
                 await this.plugin.saveSettings();
@@ -84,9 +83,9 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
             .onChange(async (value) => {
                 this.plugin.removeIndicatorCSS(indicator);
 
-                if (indicatorIndex !== -1) {
-                    this.plugin.settings.indicators[indicatorIndex].dataPath = value;
-                    this.plugin.addIndicatorCSS(this.plugin.settings.indicators[indicatorIndex]);
+                if (index !== undefined) {
+                    this.plugin.settings.indicators[index].dataPath = value;
+                    this.plugin.addIndicatorCSS(this.plugin.settings.indicators[index]);
                 }
 
                 await this.plugin.saveSettings();
@@ -103,9 +102,9 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
             .onChange(async (value) => {
                 this.plugin.removeIndicatorCSS(indicator);
 
-                if (indicatorIndex !== -1) {
-                    this.plugin.settings.indicators[indicatorIndex].shape = value;
-                    this.plugin.addIndicatorCSS(this.plugin.settings.indicators[indicatorIndex]);
+                if (index !== undefined) {
+                    this.plugin.settings.indicators[index].shape = value;
+                    this.plugin.addIndicatorCSS(this.plugin.settings.indicators[index]);
                 }
 
                 await this.plugin.saveSettings();
