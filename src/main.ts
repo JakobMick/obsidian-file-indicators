@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, } from 'obsidian';
+import { Plugin } from 'obsidian';
 
 import Indicator from './indicator';
 import IndicatorModal, { IndicatorModalAction } from './IndicatorModal';

@@ -1,4 +1,4 @@
-import { Modal, Setting, } from 'obsidian';
+import { Modal, Setting } from 'obsidian';
 
 import FileIndicatorsPlugin from './main';
 import Indicator from './indicator';

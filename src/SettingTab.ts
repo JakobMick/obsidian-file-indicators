@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab, Setting, } from 'obsidian';
+import { App, PluginSettingTab, Setting, } from 'obsidian';
 
 import FileIndicatorsPlugin from './main';
 import Indicator from './indicator';
