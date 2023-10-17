@@ -39,10 +39,9 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
 				}));
 
         new Setting(containerEl)
-        .setName('Add new indicator')
+        .setName('Indicators')
         .addButton(button => {
-            button.setIcon('plus')
-            .setTooltip('Create a new indicator')
+            button.setButtonText('Add new indicator')
             .onClick(async () => {
                 const indicator = {
                     dataPath: "",
@@ -112,7 +111,7 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
                 await this.plugin.saveSettings();
             }));
 
-        setting.addButton(button => {
+        setting.addExtraButton(button => {
             button.onClick(async () => {
                 setting.clear();
                 setting.settingEl.remove();
