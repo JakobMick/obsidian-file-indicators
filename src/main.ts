@@ -1,5 +1,7 @@
 import { Plugin } from 'obsidian';
 
+import { binaryInsert } from 'binary-insert';
+
 import Indicator from './indicator';
 import IndicatorModal, { IndicatorModalAction } from './IndicatorModal';
 import FileIndicatorsSettingTab from './SettingTab';
@@ -79,7 +81,7 @@ export default class FileIndicatorsPlugin extends Plugin {
 
     async addIndicator(indicator: Indicator) {
         this.addIndicatorCSS(indicator);
-        this.settings.indicators.push(indicator);
+        binaryInsert(this.settings.indicators, indicator, (a, b) => a.dataPath.localeCompare(b.dataPath));
         await this.saveSettings();
     }
 
