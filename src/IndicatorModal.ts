@@ -1,7 +1,8 @@
 import { Modal, Setting } from 'obsidian';
 
 import FileIndicatorsPlugin from './main';
-import Indicator from './indicator';
+import Indicator, { IndicatorShape } from './indicator';
+
 
 export enum IndicatorModalAction { ADD = 'Add', EDIT = 'Edit' }
 
@@ -42,13 +43,9 @@ export default class IndicatorModal extends Modal {
             .onChange(value => this.indicator.dataPath = value));
 
         setting.addDropdown(dropdown => dropdown
-            .addOptions({
-                "CIRCLE": "Circle",
-                "SQUIRCLE": "Squircle",
-                "SQUARE": "Square"
-            })
+            .addOptions(IndicatorShape)
             .setValue(this.indicator.shape)
-            .onChange(value => this.indicator.shape = value));
+            .onChange(value => this.indicator.shape = value as IndicatorShape));
         
         const buttonRow = new Setting(this.contentEl);
         buttonRow.setClass('modal-button-container');

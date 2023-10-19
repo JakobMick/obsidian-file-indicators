@@ -1,25 +1,26 @@
-import { Plugin } from 'obsidian';
+import { normalizePath, Plugin } from 'obsidian';
 
 import { binaryInsert } from 'binary-insert';
 
-import Indicator from './indicator';
+import Indicator, { IndicatorShape } from './indicator';
 import IndicatorModal, { IndicatorModalAction } from './IndicatorModal';
 import FileIndicatorsSettingTab from './SettingTab';
 
 interface FileIndicatorsSettings {
 	defaultColor: string;
-    defaultShape: string;
+    defaultShape: IndicatorShape;
     indicators: (Indicator)[]
 }
 
 const DEFAULT_SETTINGS: FileIndicatorsSettings = {
 	defaultColor: '#8A5CF5',
-    defaultShape: 'CIRCLE',
+    defaultShape: IndicatorShape.CIRCLE,
     indicators: [],
 }
 
 export default class FileIndicatorsPlugin extends Plugin {
 	settings: FileIndicatorsSettings;
+    styleEl: HTMLElement;
 
 	async onload() {
 		await this.loadSettings();
@@ -60,7 +61,7 @@ export default class FileIndicatorsPlugin extends Plugin {
 	}
 
 	onunload() {
-        this.unloadIndicators();
+        this.app.workspace.containerEl.querySelector('#indicator-css')?.remove();
 	}
 
 	async loadSettings() {
@@ -72,11 +73,14 @@ export default class FileIndicatorsPlugin extends Plugin {
 	}
 
     loadIndicators() {
+        const styleEl = this.app.workspace.containerEl.querySelector('#indicator-css');
+
+        if(styleEl == null) {
+            this.app.workspace.containerEl.createEl('style', {})
+                .setAttribute('id', 'indicator-css')
+        }
+
         this.settings.indicators.forEach((i) => this.addIndicatorCSS(i))
-    }
-    
-    unloadIndicators() {
-        this.settings.indicators.forEach((i) => this.removeIndicatorCSS(i))
     }
 
     async addIndicator(indicator: Indicator) {
@@ -93,17 +97,27 @@ export default class FileIndicatorsPlugin extends Plugin {
     }
 
     addIndicatorCSS(indicator: Indicator) {
-        const item = document.querySelector(".workspace-leaf-content[data-type='file-explorer'] .tree-item-self[data-path='" + indicator.dataPath + "']>.tree-item-inner");
-        item?.addClass("indicator");
-        if(indicator.shape == "SQUARE") item?.addClass("indicator-square");
-        if(indicator.shape == "SQUIRCLE") item?.addClass("indicator-squircle");
-        item?.setAttribute("style", "--indicator-color: " + indicator.color);
+        const styleEl = this.app.workspace.containerEl.querySelector('#indicator-css');
+        styleEl?.appendText(this.getIndicatorCSS(indicator));
     }
 
     removeIndicatorCSS(indicator: Indicator) {
-        const item = document.querySelector(".workspace-leaf-content[data-type='file-explorer'] .tree-item-self[data-path='" + indicator.dataPath + "']>.tree-item-inner");
-        item?.removeClass("indicator", "indicator-square", "indicator-quircle");
-        item?.removeAttribute("style");
+        const styleEl = this.app.workspace.containerEl.querySelector('#indicator-css');
+        
+        if(styleEl != null) {
+            styleEl.setText(styleEl?.getText().replace(this.getIndicatorCSS(indicator), ''));
+        }
+    }
+
+    getIndicatorCSS(indicator: Indicator) {
+        const normalizedPath = normalizePath(`${this.app.vault.configDir}/plugins/${this.manifest.id}/src/shapes/${indicator.shape.toLowerCase()}.svg`)
+        const shapeUrl = this.app.vault.adapter.getResourcePath(normalizedPath);
+        return `.tree-item-self[data-path='${indicator.dataPath}']>.tree-item-inner:before {
+            content: "";
+            -webkit-mask-image: url(${shapeUrl});
+            mask-image: url(${shapeUrl});
+            background-color: ${indicator.color};
+        }`;
     }
 }
 

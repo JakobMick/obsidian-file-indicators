@@ -1,7 +1,7 @@
 import { App, Platform, PluginSettingTab, Setting } from 'obsidian';
 
 import FileIndicatorsPlugin from './main';
-import Indicator from './indicator';
+import Indicator, { IndicatorShape } from './indicator';
 
 export default class FileIndicatorsSettingTab extends PluginSettingTab {
 	plugin: FileIndicatorsPlugin;
@@ -27,14 +27,10 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
         new Setting(containerEl)
             .setName('Default shape')
             .addDropdown(dropdown => dropdown
-                .addOptions({
-                    "CIRCLE": "Circle",
-                    "SQUIRCLE": "Squircle",
-                    "SQUARE": "Square"
-                })
+                .addOptions(IndicatorShape)
                 .setValue(this.plugin.settings.defaultShape)
                 .onChange(async (value) => {
-					this.plugin.settings.defaultShape = value;
+					this.plugin.settings.defaultShape = value as IndicatorShape;
 					await this.plugin.saveSettings();
 				}));
 
@@ -93,17 +89,13 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
         });
 
         setting.addDropdown(dropdown => dropdown
-            .addOptions({
-                "CIRCLE": "Circle",
-                "SQUIRCLE": "Squircle",
-                "SQUARE": "Square"
-            })
+            .addOptions(IndicatorShape)
             .setValue(indicator.shape)
             .onChange(async (value) => {
                 this.plugin.removeIndicatorCSS(indicator);
 
                 if (index !== undefined) {
-                    this.plugin.settings.indicators[index].shape = value;
+                    this.plugin.settings.indicators[index].shape = value as IndicatorShape;
                     this.plugin.addIndicatorCSS(this.plugin.settings.indicators[index]);
                 }
 

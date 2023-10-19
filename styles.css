@@ -2,7 +2,7 @@
     --indicator-color: --color-accent;
 }
 
-.indicator-list-item {
+.indicator-list-item, .indicator-list-warning {
     border-top: none;
 }
 
@@ -26,26 +26,15 @@
     border-top: none;
 }
 
-.indicator::before {
-    content: "";
-    background-color: var(--indicator-color);
+.workspace-leaf-content[data-type='file-explorer'] .tree-item-self>.tree-item-inner:before {
     display: inline-block;
     width: 0.75em;
     height: 0.75em;
     margin-inline-end: var(--size-2-3);
-    -moz-border-radius: 7.5px;
-    -webkit-border-radius: 7.5px;
-    border-radius: 7.5px;
-}
-
-.indicator.indicator-squircle::before {
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-}
-
-.indicator.indicator-square::before {
-    -moz-border-radius: 0px;
-    -webkit-border-radius: 0px;
-    border-radius: 0px;
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: 50% 50%;
+    mask-position: 50% 50%;
 }
