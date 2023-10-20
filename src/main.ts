@@ -26,7 +26,12 @@ export default class FileIndicatorsPlugin extends Plugin {
 		await this.loadSettings();
 
 		this.app.workspace.onLayoutReady(() => {
-			setTimeout(() => this.loadIndicators(), 0);
+			setTimeout(() => {
+                this.styleEl = this.app.workspace.containerEl.createEl('style', {});
+                this.styleEl.setAttribute('id', 'indicator-css');
+
+                this.loadIndicators();
+            }, 0);
 		});
 
         this.registerEvent(this.app.workspace.on("file-menu", (menu, file) => {
@@ -61,7 +66,7 @@ export default class FileIndicatorsPlugin extends Plugin {
 	}
 
 	onunload() {
-        this.app.workspace.containerEl.querySelector('#indicator-css')?.remove();
+        this.styleEl.remove();
 	}
 
 	async loadSettings() {
@@ -73,13 +78,6 @@ export default class FileIndicatorsPlugin extends Plugin {
 	}
 
     loadIndicators() {
-        const styleEl = this.app.workspace.containerEl.querySelector('#indicator-css');
-
-        if(styleEl == null) {
-            this.app.workspace.containerEl.createEl('style', {})
-                .setAttribute('id', 'indicator-css')
-        }
-
         this.settings.indicators.forEach((i) => this.addIndicatorCSS(i))
     }
 
@@ -97,31 +95,23 @@ export default class FileIndicatorsPlugin extends Plugin {
     }
 
     addIndicatorCSS(indicator: Indicator) {
-        const styleEl = this.app.workspace.containerEl.querySelector('#indicator-css');
-        styleEl?.appendText(this.getIndicatorCSS(indicator));
+        this.styleEl.appendText(this.getIndicatorCSS(indicator) + '/**/');
     }
 
     removeIndicatorCSS(indicator: Indicator) {
-        const styleEl = this.app.workspace.containerEl.querySelector('#indicator-css');
-        
-        if(styleEl != null) {
-            styleEl.setText(styleEl?.getText().replace(this.getIndicatorCSS(indicator), ''));
-        }
+        const css = this.styleEl.getText().split('/**/')
+
+        const indicatorCSS = css.find((value) => value.contains(`'${indicator.dataPath}'`));
+
+        css.remove(indicatorCSS ?? '');
+
+        this.styleEl.setText(css.join('/**/'));
     }
 
     getIndicatorCSS(indicator: Indicator) {
         const normalizedPath = normalizePath(`${this.app.vault.configDir}/plugins/${this.manifest.id}/src/shapes/${indicator.shape.toLowerCase()}.svg`)
         const shapeUrl = this.app.vault.adapter.getResourcePath(normalizedPath);
-        return `.tree-item-self[data-path='${indicator.dataPath}']>.tree-item-inner {
-            padding-inline-start: calc(1em + var(--size-2-3));
-        }
-        .tree-item-self[data-path='${indicator.dataPath}']>.tree-item-inner:before {
-            content: "";
-            -webkit-mask-image: url(${shapeUrl});
-            mask-image: url(${shapeUrl});
-            background-color: ${indicator.color};
-        }
-        `;
+        return `.tree-item-self[data-path='${indicator.dataPath}']>.tree-item-inner { padding-inline-start: calc(1em + var(--size-2-3)); } .tree-item-self[data-path='${indicator.dataPath}']>.tree-item-inner:before { content: ""; -webkit-mask-image: url(${shapeUrl}); mask-image: url(${shapeUrl}); background-color: ${indicator.color}; }`;
     }
 }
 
