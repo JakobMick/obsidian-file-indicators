@@ -6,5 +6,9 @@ export default interface Indicator {
 
 export enum IndicatorShape {
     CIRCLE = 'Circle',
-    STAR = 'Star'
+    TRIANGLE = 'Triangle',
+    SQUARE = 'Square',
+    RING = 'Ring',
+    FRAME = 'Frame',
+    STAR = 'Star',
 }
