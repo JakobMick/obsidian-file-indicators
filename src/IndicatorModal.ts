@@ -51,6 +51,10 @@ export default class IndicatorModal extends Modal {
             .addOptions(IndicatorShape)
             .setValue(this.indicator.shape)
             .onChange(value => this.indicator.shape = value as IndicatorShape));
+            
+        const error = new Setting(this.contentEl);
+        error.setDesc('Path already has an indicator.');
+        error.settingEl.addClass('indicator-modal-error');
         
         const buttonRow = new Setting(this.contentEl);
         buttonRow.setClass('modal-button-container');
@@ -60,17 +64,22 @@ export default class IndicatorModal extends Modal {
             button.setButtonText(this.action == IndicatorModalAction.EDIT ? 'Save' : 'Add')
             .setClass('mod-cta')
             .onClick(async () => {
+                const index = this.plugin.settings.indicators.findIndex((i) => i.dataPath == this.indicator.dataPath);
+
                 if(this.action == IndicatorModalAction.EDIT) {
-                    const indicatorIndex = this.plugin.settings.indicators.indexOf(oldIndicator);
-                    this.plugin.settings.indicators[indicatorIndex] = this.indicator;
+                    this.plugin.settings.indicators[index] = this.indicator;
                     this.plugin.removeIndicator(oldIndicator);
                     await this.plugin.addIndicator(this.indicator);
                     this.onSubmit(this.indicator);
                     this.close();
                 } else {
-                    await this.plugin.addIndicator(this.indicator);
-                    this.onSubmit(this.indicator);
-                    this.close();
+                    if(index >= 0) {
+                        error.setClass('indicator-modal-error--active');
+                    } else {
+                        await this.plugin.addIndicator(this.indicator);
+                        this.onSubmit(this.indicator);
+                        this.close();
+                    }
                 }
             });
         });

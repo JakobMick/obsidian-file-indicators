@@ -24,6 +24,20 @@
     margin-inline-end: 0px;
 }
 
+.indicator-modal-error {
+    display: none;
+    border-top: none;
+}
+
+.indicator-modal-error--active {
+    display: block;
+}
+
+.indicator-modal-error .setting-item-description {
+    padding: 0px;
+    color: var(--text-error);
+}
+
 .indicator-modal-buttons {
     padding: 0px;
     border-top: none;
