@@ -198,7 +198,7 @@ export default class FileIndicatorsPlugin extends Plugin {
     getIndicatorCSS(indicator: Indicator) {
         const normalizedPath = normalizePath(`${this.app.vault.configDir}/plugins/${this.manifest.id}/src/shapes/${indicator.shape.toLowerCase()}.svg`)
         const shapeUrl = this.app.vault.adapter.getResourcePath(normalizedPath);
-        return `.tree-item-self[data-path='${indicator.dataPath}']>.tree-item-inner { padding-inline-start: calc(1em + var(--size-2-3)); } .tree-item-self[data-path='${indicator.dataPath}']>.tree-item-inner:before { content: ""; -webkit-mask-image: url(${shapeUrl}); mask-image: url(${shapeUrl}); background-color: ${indicator.color}; }`;
+        return `.tree-item-self[data-path='${indicator.dataPath}']:not([data-path='/'])>.tree-item-inner { padding-inline-start: calc(1em + var(--size-2-3)); } .tree-item-self[data-path='${indicator.dataPath}']>.tree-item-inner:before { content: ""; -webkit-mask-image: url(${shapeUrl}); mask-image: url(${shapeUrl}); background-color: ${indicator.color}; }`;
     }
 }
 
