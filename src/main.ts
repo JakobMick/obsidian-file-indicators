@@ -79,6 +79,75 @@ export default class FileIndicatorsPlugin extends Plugin {
                 this.removeIndicator(indicator);
             }
         }));
+    
+        this.addCommand({
+            id: "add-indicator-to-active-file",
+            name: "Add indicator to active file",
+			checkCallback: (checking: boolean) => {
+                const file = this.app.workspace.getActiveFile();
+                
+				if (file) {
+                    const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == file.path);
+                    
+                    if(!indicator) {
+
+                        if (!checking) {
+                            const i = {
+                                dataPath: file.path,
+                                color: this.settings.defaultColor,
+                                shape: this.settings.defaultShape,
+                            };
+    
+                            new IndicatorModal(this, i).open();
+                        }
+    
+                        return true;
+                    }
+				}
+			},
+        });
+    
+        this.addCommand({
+            id: "edit-indicator-of-active-file",
+            name: "Edit indicator of active file",
+			checkCallback: (checking: boolean) => {
+                const file = this.app.workspace.getActiveFile();
+                
+				if (file) {
+                    const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == file.path);
+
+                    if(indicator) {
+
+                        if (!checking) {
+                            new IndicatorModal(this, indicator, IndicatorModalAction.EDIT).open();
+                        }
+    
+                        return true;
+                    }
+				}
+			},
+        });
+    
+        this.addCommand({
+            id: "remove-indicator-of-active-file",
+            name: "Remove indicator of active file",
+			checkCallback: (checking: boolean) => {
+                const file = this.app.workspace.getActiveFile();
+                
+				if (file) {
+                    const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == file.path);
+
+                    if(indicator) {
+
+                        if (!checking) {
+                            this.removeIndicator(indicator);
+                        }
+    
+                        return true;
+                    }
+				}
+			},
+        });
 
 		this.addSettingTab(new FileIndicatorsSettingTab(this.app, this));
 	}
