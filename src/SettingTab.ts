@@ -2,6 +2,7 @@ import { App, Platform, PluginSettingTab, Setting } from 'obsidian';
 
 import FileIndicatorsPlugin from './main';
 import Indicator, { IndicatorShape } from './indicator';
+import IndicatorModal, { IndicatorModalAction } from './IndicatorModal';
 
 export default class FileIndicatorsSettingTab extends PluginSettingTab {
 	plugin: FileIndicatorsPlugin;
@@ -12,9 +13,12 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
 	}
 
 	display(): void {
-		const {containerEl} = this;
+		const { containerEl } = this;
 
 		containerEl.empty();
+
+        const listEl = createEl('div');
+        listEl.addClass('indicator-list');
 
         new Setting(containerEl)
             .setName('Default color').addColorPicker(colorpicker => colorpicker
@@ -40,23 +44,41 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
             button.setButtonText('Add new indicator')
             .onClick(async () => {
                 const indicator = {
-                    dataPath: "",
+                    dataPath: '',
                     color: this.plugin.settings.defaultColor,
                     shape: this.plugin.settings.defaultShape,
                 };
 
-                this.addIndicatorListOption(containerEl, indicator);
-                this.plugin.settings.indicators.push(indicator);
-                await this.plugin.saveSettings();
+                new IndicatorModal(
+                    this.plugin, 
+                    indicator, 
+                    IndicatorModalAction.ADD, 
+                    (indicator: Indicator) => {
+                        listEl.empty()
+                        this.loadIndicatorList(listEl);
+                    },
+                ).open();
             });
         })
 
+        this.containerEl.appendChild(listEl)
+
         this.plugin.settings.indicators.forEach((indicator, index) => {
-            this.addIndicatorListOption(containerEl, indicator, index);
+            this.addIndicatorListItem(listEl, indicator, index);
         });
 	}
 
-    async addIndicatorListOption(containerEl: HTMLElement, indicator: Indicator, index: number | undefined = undefined) {
+    loadIndicatorList(containerEl: HTMLElement) {
+        this.plugin.settings.indicators.forEach((indicator, index) => {
+            this.addIndicatorListItem(containerEl, indicator, index);
+        });
+    }
+
+    addIndicatorListItem(
+        containerEl: HTMLElement, 
+        indicator: Indicator, 
+        index: number | undefined = undefined,
+    ) {
         const setting = new Setting(containerEl)
         setting.setClass('indicator-list-item')
 
@@ -76,6 +98,7 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
         setting.addText(text => {
             text.setPlaceholder('Data path')
             .setValue(indicator.dataPath)
+            .setDisabled(true)
             .onChange(async (value) => {
                 this.plugin.removeIndicatorCSS(indicator);
 

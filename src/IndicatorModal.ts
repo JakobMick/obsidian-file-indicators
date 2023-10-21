@@ -10,16 +10,19 @@ export default class IndicatorModal extends Modal {
 	plugin: FileIndicatorsPlugin;
     indicator: Indicator;
     action: IndicatorModalAction;
+    onSubmit: (indicator: Indicator) => void ;
 
 	constructor(
         plugin: FileIndicatorsPlugin, 
         indicator: Indicator, 
-        action: IndicatorModalAction = IndicatorModalAction.ADD
+        action: IndicatorModalAction = IndicatorModalAction.ADD,
+        onSubmit: (indicator: Indicator) => void = () => null,
     ) {
         super(plugin.app);
         this.plugin = plugin;
         this.indicator = indicator;
         this.action = action;
+        this.onSubmit = onSubmit;
     }
 
 	onOpen() {
@@ -59,11 +62,12 @@ export default class IndicatorModal extends Modal {
                     const indicatorIndex = this.plugin.settings.indicators.indexOf(oldIndicator);
                     this.plugin.settings.indicators[indicatorIndex] = this.indicator;
                     this.plugin.removeIndicator(oldIndicator);
-                    this.plugin.addIndicator(this.indicator);
-                    await this.plugin.saveSettings();
+                    await this.plugin.addIndicator(this.indicator);
+                    this.onSubmit(this.indicator);
                     this.close();
                 } else {
                     await this.plugin.addIndicator(this.indicator);
+                    this.onSubmit(this.indicator);
                     this.close();
                 }
             });
@@ -76,7 +80,6 @@ export default class IndicatorModal extends Modal {
 	}
 
 	onClose() {
-		const {contentEl} = this;
-		contentEl.empty();
+		this.contentEl.empty();
 	}
 }

@@ -1,4 +1,10 @@
-.indicator-list-item, .indicator-list-warning {
+.indicator-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75em 0;
+}
+
+.indicator-list-item {
     border-top: none;
 }
 
