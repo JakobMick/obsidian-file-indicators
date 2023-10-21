@@ -12,7 +12,8 @@
     display: none;
 }
 
-.indicator-list-item input[type="text"] {
+.indicator-list-item input[type="text"], 
+.indicator-list-item .search-input-container {
     flex: 1;
 }
 
