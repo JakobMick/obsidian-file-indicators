@@ -62,6 +62,24 @@ export default class FileIndicatorsPlugin extends Plugin {
             }
         }));
 
+        this.registerEvent(this.app.vault.on("rename", async (file, oldPath) => {
+            const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == oldPath);
+            
+            if(indicator !== undefined) {
+                this.removeIndicator(indicator);
+                indicator.dataPath = file.path;
+                this.addIndicator(indicator);
+            }
+        }));
+
+        this.registerEvent(this.app.vault.on("delete", async (file) => {
+            const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == file.path);
+            
+            if(indicator !== undefined) {
+                this.removeIndicator(indicator);
+            }
+        }));
+
 		this.addSettingTab(new FileIndicatorsSettingTab(this.app, this));
 	}
 
