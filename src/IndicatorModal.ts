@@ -52,9 +52,13 @@ export default class IndicatorModal extends Modal {
             .setValue(this.indicator.shape)
             .onChange(value => this.indicator.shape = value as IndicatorShape));
             
-        const error = new Setting(this.contentEl);
-        error.setDesc('Path already has an indicator.');
-        error.settingEl.addClass('indicator-modal-error');
+        const emptyError = new Setting(this.contentEl);
+        emptyError.setDesc('Please set a path.');
+        emptyError.settingEl.addClass('indicator-modal-error');
+            
+        const duplicateError = new Setting(this.contentEl);
+        duplicateError.setDesc('Path already has an indicator.');
+        duplicateError.settingEl.addClass('indicator-modal-error');
         
         const buttonRow = new Setting(this.contentEl);
         buttonRow.setClass('modal-button-container');
@@ -64,22 +68,29 @@ export default class IndicatorModal extends Modal {
             button.setButtonText(this.action == IndicatorModalAction.EDIT ? 'Save' : 'Add')
             .setClass('mod-cta')
             .onClick(async () => {
-                const index = this.plugin.settings.indicators.findIndex((i) => i.dataPath == this.indicator.dataPath);
+                emptyError.settingEl.removeClass('indicator-modal-error--active');
+                duplicateError.settingEl.removeClass('indicator-modal-error--active');
 
-                if(this.action == IndicatorModalAction.EDIT) {
-                    this.plugin.settings.indicators[index] = this.indicator;
-                    this.plugin.removeIndicator(oldIndicator);
-                    await this.plugin.addIndicator(this.indicator);
-                    this.onSubmit(this.indicator);
-                    this.close();
-                } else {
-                    if(index >= 0) {
-                        error.setClass('indicator-modal-error--active');
-                    } else {
+                if(this.indicator.dataPath != '') {
+                    const index = this.plugin.settings.indicators.findIndex((i) => i.dataPath == this.indicator.dataPath);
+    
+                    if(this.action == IndicatorModalAction.EDIT) {
+                        this.plugin.settings.indicators[index] = this.indicator;
+                        this.plugin.removeIndicator(oldIndicator);
                         await this.plugin.addIndicator(this.indicator);
                         this.onSubmit(this.indicator);
                         this.close();
+                    } else {
+                        if(index < 0) {
+                            await this.plugin.addIndicator(this.indicator);
+                            this.onSubmit(this.indicator);
+                            this.close();
+                        } else {
+                            duplicateError.settingEl.addClass('indicator-modal-error--active');
+                        }
                     }
+                } else {
+                    emptyError.settingEl.addClass('indicator-modal-error--active');
                 }
             });
         });
