@@ -81,6 +81,20 @@ export default class FileIndicatorsPlugin extends Plugin {
         }));
     
         this.addCommand({
+            id: "add-indicator",
+            name: "Add indicator",
+            callback: () => {
+                const i = {
+                    dataPath: '',
+                    color: this.settings.defaultColor,
+                    shape: this.settings.defaultShape,
+                };
+
+                new IndicatorModal(this, i).open();
+            },
+        });
+    
+        this.addCommand({
             id: "add-indicator-to-active-file",
             name: "Add indicator to active file",
 			checkCallback: (checking: boolean) => {
