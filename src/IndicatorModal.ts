@@ -71,26 +71,28 @@ export default class IndicatorModal extends Modal {
                 emptyError.settingEl.removeClass('indicator-modal-error--active');
                 duplicateError.settingEl.removeClass('indicator-modal-error--active');
 
-                if(this.indicator.dataPath != '') {
-                    const index = this.plugin.settings.indicators.findIndex((i) => i.dataPath == this.indicator.dataPath);
-    
-                    if(this.action == IndicatorModalAction.EDIT) {
-                        this.plugin.settings.indicators[index] = this.indicator;
-                        this.plugin.removeIndicator(oldIndicator);
-                        await this.plugin.addIndicator(this.indicator);
-                        this.onSubmit(this.indicator);
-                        this.close();
-                    } else {
-                        if(index < 0) {
-                            await this.plugin.addIndicator(this.indicator);
-                            this.onSubmit(this.indicator);
-                            this.close();
-                        } else {
-                            duplicateError.settingEl.addClass('indicator-modal-error--active');
-                        }
-                    }
-                } else {
+                if(this.indicator.dataPath == '') {
                     emptyError.settingEl.addClass('indicator-modal-error--active');
+                    return;
+                }
+                
+                const index = this.plugin.settings.indicators.findIndex((i) => i.dataPath == this.indicator.dataPath);
+
+                if(index >= 0 && oldIndicator.dataPath != this.indicator.dataPath) {
+                    duplicateError.settingEl.addClass('indicator-modal-error--active');
+                    return;
+                }
+
+                if(this.action == IndicatorModalAction.EDIT) {
+                    this.plugin.settings.indicators[index] = this.indicator;
+                    this.plugin.removeIndicator(oldIndicator);
+                    await this.plugin.addIndicator(this.indicator);
+                    this.onSubmit(this.indicator);
+                    this.close();
+                } else {
+                    await this.plugin.addIndicator(this.indicator);
+                    this.onSubmit(this.indicator);
+                    this.close();
                 }
             });
         });
