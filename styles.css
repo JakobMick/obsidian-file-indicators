@@ -1,3 +1,7 @@
+:root{
+    --indicator-size: 0.75em
+}
+
 .indicator-list {
     display: flex;
     flex-direction: column;
@@ -46,17 +50,17 @@
 .workspace-leaf-content[data-type='file-explorer'] .tree-item-self>.tree-item-inner:before {
     position: absolute;
     display: inline-block;
-    width: 0.75em;
-    height: 0.75em;
+    width: var(--indicator-size);
+    height: var(--indicator-size);
     margin: auto;
     top: 0;
     bottom: 0;
-    -webkit-transform: translateX(calc((0.75em + var(--size-2-3)) * -1));
-    transform: translateX(calc((0.75em + var(--size-2-3)) * -1));
-    -webkit-mask-size: contain; 
-    mask-size: contain;
+    -webkit-transform: translateX(calc((var(--indicator-size) + var(--size-2-3)) * -1));
+    transform: translateX(calc((var(--indicator-size) + var(--size-2-3)) * -1));
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
     -webkit-mask-position: center;
     mask-position: center;
+    -webkit-mask-composite: exclude;
+    mask-composite: exclude;
 }
