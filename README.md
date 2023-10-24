@@ -1,3 +1,3 @@
 # Obsidian File Indicators
 
-Add costum indicators to your file explorer.
+Add costum indicators to the file explorer.
