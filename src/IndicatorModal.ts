@@ -93,7 +93,7 @@ export default class IndicatorModal extends Modal {
 
                 if(this.action == IndicatorModalAction.EDIT) {
                     this.plugin.settings.indicators[index] = indicator;
-                    this.plugin.removeIndicator(this.indicator);
+                    await this.plugin.removeIndicator(this.indicator);
                     await this.plugin.addIndicator(indicator);
                     this.onSubmit(indicator);
                     this.close();

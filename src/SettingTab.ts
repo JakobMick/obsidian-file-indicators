@@ -42,7 +42,7 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
         .setName('Indicators')
         .addButton(button => {
             button.setButtonText('Add new indicator')
-            .onClick(async () => {
+            .onClick(() => {
                 const indicator = {
                     dataPath: '',
                     color: this.plugin.settings.defaultColor,
@@ -119,7 +119,7 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
             button.onClick(async () => {
                 setting.clear();
                 setting.settingEl.remove();
-                this.plugin.removeIndicator(indicator);
+                await this.plugin.removeIndicator(indicator);
             })
             .setTooltip('Delete indicator')
             .setIcon('trash-2');

@@ -41,7 +41,7 @@ export default class FileIndicatorsPlugin extends Plugin {
                 menu.addItem(item => item
                     .setTitle('Add indicator')
                     .setIcon('plus')
-                    .onClick(async () => {
+                    .onClick(() => {
                         const indicator = {
                             dataPath: file.path,
                             color: this.settings.defaultColor,
@@ -66,9 +66,9 @@ export default class FileIndicatorsPlugin extends Plugin {
             const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == oldPath);
             
             if(indicator !== undefined) {
-                this.removeIndicator(indicator);
+                await this.removeIndicator(indicator);
                 indicator.dataPath = file.path;
-                this.addIndicator(indicator);
+                await this.addIndicator(indicator);
             }
         }));
 
@@ -76,7 +76,7 @@ export default class FileIndicatorsPlugin extends Plugin {
             const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == file.path);
             
             if(indicator !== undefined) {
-                this.removeIndicator(indicator);
+                await this.removeIndicator(indicator);
             }
         }));
     
@@ -145,7 +145,7 @@ export default class FileIndicatorsPlugin extends Plugin {
         this.addCommand({
             id: 'remove-indicator-of-active-file',
             name: 'Remove indicator of active file',
-			checkCallback: (checking: boolean) => {
+			checkCallback:  (checking: boolean) => {
                 const file = this.app.workspace.getActiveFile();
                 
 				if (file) {
