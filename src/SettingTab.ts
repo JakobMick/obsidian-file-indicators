@@ -98,17 +98,7 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
         setting.addText(text => {
             text.setPlaceholder('Data path')
             .setValue(indicator.dataPath)
-            .setDisabled(true)
-            .onChange(async (value) => {
-                this.plugin.removeIndicatorCSS(indicator);
-
-                if (index !== undefined) {
-                    this.plugin.settings.indicators[index].dataPath = value;
-                    this.plugin.addIndicatorCSS(this.plugin.settings.indicators[index]);
-                }
-
-                await this.plugin.saveSettings();
-            });
+            .setDisabled(true);
         });
 
         setting.addDropdown(dropdown => dropdown
