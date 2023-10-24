@@ -2,7 +2,7 @@ import { Modal, Setting } from 'obsidian';
 
 import FileIndicatorsPlugin from './main';
 import Indicator, { IndicatorShape } from './indicator';
-import { FileSuggest } from './suggest/FileSuggest';
+import { AbstractFileSuggest } from './suggest/AbstractFileSuggest';
 
 export enum IndicatorModalAction { ADD = 'Add', EDIT = 'Edit' }
 
@@ -46,7 +46,7 @@ export default class IndicatorModal extends Modal {
 
         setting.addSearch(search => {
             search.setPlaceholder('Data path');
-            new FileSuggest(this.app, search.inputEl);
+            new AbstractFileSuggest(this.app, search.inputEl);
             search.setValue(indicator.dataPath);
             search.onChange(value => indicator.dataPath = value);
         })
