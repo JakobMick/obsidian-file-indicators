@@ -26,7 +26,11 @@ export default class IndicatorModal extends Modal {
     }
 
 	onOpen() {
-        const oldIndicator = this.indicator;
+        const indicator: Indicator = {
+            dataPath: this.indicator.dataPath,
+            color: this.indicator.color,
+            shape: this.indicator.shape,
+        };
 
         this.titleEl.setText(this.action + ' indicator');
 
@@ -37,20 +41,20 @@ export default class IndicatorModal extends Modal {
         setting.setClass('indicator-modal-item');
 
         setting.addColorPicker(colorpicker => colorpicker
-            .setValue(this.indicator.color)
-            .onChange(value => this.indicator.color = value.toString()));
+            .setValue(indicator.color)
+            .onChange(value => indicator.color = value.toString()));
 
         setting.addSearch(search => {
             search.setPlaceholder('Data path');
             new FileSuggest(this.app, search.inputEl);
-            search.setValue(this.indicator.dataPath);
-            search.onChange(value => this.indicator.dataPath = value);
+            search.setValue(indicator.dataPath);
+            search.onChange(value => indicator.dataPath = value);
         })
 
         setting.addDropdown(dropdown => dropdown
             .addOptions(IndicatorShape)
-            .setValue(this.indicator.shape)
-            .onChange(value => this.indicator.shape = value as IndicatorShape));
+            .setValue(indicator.shape)
+            .onChange(value => indicator.shape = value as IndicatorShape));
             
         const emptyError = new Setting(this.contentEl);
         emptyError.setDesc('Please set a path.');
@@ -71,27 +75,31 @@ export default class IndicatorModal extends Modal {
                 emptyError.settingEl.removeClass('indicator-modal-error--active');
                 duplicateError.settingEl.removeClass('indicator-modal-error--active');
 
-                if(this.indicator.dataPath == '') {
+                if(indicator.dataPath == '') {
                     emptyError.settingEl.addClass('indicator-modal-error--active');
                     return;
                 }
                 
-                const index = this.plugin.settings.indicators.findIndex((i) => i.dataPath == this.indicator.dataPath);
+                const index = this.plugin.settings.indicators.findIndex((i) => i.dataPath == indicator.dataPath);
 
-                if(index >= 0 && oldIndicator.dataPath != this.indicator.dataPath) {
+                if(index >= 0 && this.indicator.dataPath != indicator.dataPath) {
+                    console.log(index >= 0 )
+                    console.log(this.indicator.dataPath != indicator.dataPath)
+                    console.log(this.indicator.dataPath)
+                    console.log(indicator.dataPath)
                     duplicateError.settingEl.addClass('indicator-modal-error--active');
                     return;
                 }
 
                 if(this.action == IndicatorModalAction.EDIT) {
-                    this.plugin.settings.indicators[index] = this.indicator;
-                    this.plugin.removeIndicator(oldIndicator);
-                    await this.plugin.addIndicator(this.indicator);
-                    this.onSubmit(this.indicator);
+                    this.plugin.settings.indicators[index] = indicator;
+                    this.plugin.removeIndicator(this.indicator);
+                    await this.plugin.addIndicator(indicator);
+                    this.onSubmit(indicator);
                     this.close();
                 } else {
-                    await this.plugin.addIndicator(this.indicator);
-                    this.onSubmit(this.indicator);
+                    await this.plugin.addIndicator(indicator);
+                    this.onSubmit(indicator);
                     this.close();
                 }
             });
