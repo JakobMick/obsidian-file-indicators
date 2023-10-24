@@ -34,13 +34,13 @@ export default class FileIndicatorsPlugin extends Plugin {
             }, 0);
 		});
 
-        this.registerEvent(this.app.workspace.on("file-menu", (menu, file) => {
+        this.registerEvent(this.app.workspace.on('file-menu', (menu, file) => {
             const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == file.path);
 
             if(!indicator) {
                 menu.addItem(item => item
-                    .setTitle("Add indicator")
-                    .setIcon("plus")
+                    .setTitle('Add indicator')
+                    .setIcon('plus')
                     .onClick(async () => {
                         const indicator = {
                             dataPath: file.path,
@@ -52,17 +52,17 @@ export default class FileIndicatorsPlugin extends Plugin {
                     }));
             } else {
                 menu.addItem(item => item
-                    .setTitle("Edit indicator")
-                    .setIcon("pencil")
+                    .setTitle('Edit indicator')
+                    .setIcon('pencil')
                     .onClick(() => new IndicatorModal(this, indicator, IndicatorModalAction.EDIT).open()));
                 menu.addItem(item => item
-                    .setTitle("Remove indicator")
-                    .setIcon("minus")
+                    .setTitle('Remove indicator')
+                    .setIcon('minus')
                     .onClick(async () => await this.removeIndicator(indicator)));
             }
         }));
 
-        this.registerEvent(this.app.vault.on("rename", async (file, oldPath) => {
+        this.registerEvent(this.app.vault.on('rename', async (file, oldPath) => {
             const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == oldPath);
             
             if(indicator !== undefined) {
@@ -72,7 +72,7 @@ export default class FileIndicatorsPlugin extends Plugin {
             }
         }));
 
-        this.registerEvent(this.app.vault.on("delete", async (file) => {
+        this.registerEvent(this.app.vault.on('delete', async (file) => {
             const indicator = this.settings.indicators.find((indicator) => indicator.dataPath == file.path);
             
             if(indicator !== undefined) {
@@ -81,8 +81,8 @@ export default class FileIndicatorsPlugin extends Plugin {
         }));
     
         this.addCommand({
-            id: "add-indicator",
-            name: "Add indicator",
+            id: 'add-indicator',
+            name: 'Add indicator',
             callback: () => {
                 const i = {
                     dataPath: '',
@@ -95,8 +95,8 @@ export default class FileIndicatorsPlugin extends Plugin {
         });
     
         this.addCommand({
-            id: "add-indicator-to-active-file",
-            name: "Add indicator to active file",
+            id: 'add-indicator-to-active-file',
+            name: 'Add indicator to active file',
 			checkCallback: (checking: boolean) => {
                 const file = this.app.workspace.getActiveFile();
                 
@@ -122,8 +122,8 @@ export default class FileIndicatorsPlugin extends Plugin {
         });
     
         this.addCommand({
-            id: "edit-indicator-of-active-file",
-            name: "Edit indicator of active file",
+            id: 'edit-indicator-of-active-file',
+            name: 'Edit indicator of active file',
 			checkCallback: (checking: boolean) => {
                 const file = this.app.workspace.getActiveFile();
                 
@@ -143,8 +143,8 @@ export default class FileIndicatorsPlugin extends Plugin {
         });
     
         this.addCommand({
-            id: "remove-indicator-of-active-file",
-            name: "Remove indicator of active file",
+            id: 'remove-indicator-of-active-file',
+            name: 'Remove indicator of active file',
 			checkCallback: (checking: boolean) => {
                 const file = this.app.workspace.getActiveFile();
                 

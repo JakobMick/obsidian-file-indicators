@@ -1,8 +1,8 @@
 // Credits: https://github.com/liamcain/obsidian-periodic-notes and https://github.com/SilentVoid13/Templater
 
-import { TAbstractFile, TFolder } from "obsidian";
+import { TAbstractFile, TFolder } from 'obsidian';
 
-import { TextInputSuggest } from "./suggest";
+import { TextInputSuggest } from './suggest';
 
 export class FileSuggest extends TextInputSuggest<TAbstractFile> {
   getSuggestions(inputStr: string): TAbstractFile[] {
@@ -27,7 +27,7 @@ export class FileSuggest extends TextInputSuggest<TAbstractFile> {
 
   selectSuggestion(file: TAbstractFile): void {
     this.inputEl.value = file.path;
-    this.inputEl.trigger("input");
+    this.inputEl.trigger('input');
     this.close();
   }
 }
@@ -56,7 +56,7 @@ export class FolderSuggest extends TextInputSuggest<TFolder> {
 
   selectSuggestion(file: TFolder): void {
     this.inputEl.value = file.path;
-    this.inputEl.trigger("input");
+    this.inputEl.trigger('input');
     this.close();
   }
 }
