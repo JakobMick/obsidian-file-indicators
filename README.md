@@ -2,7 +2,7 @@
 
 Add costum indicators to the file explorer.
 
-<img src="./screenshots/horizontal.png">
+<img src="https://github.com/JakobMick/obsidian-file-indicators/blob/main/screenshots/horizontal.png?raw=true">
 
 This plugin lets you add indicators in custom colors and different shapes to all your files and folders.
 
@@ -16,7 +16,7 @@ Go to the `File indicator` plugin settings and select `Add indicator`.
 
 This way you can even set an indicator at root level:
 
-<img src="./screenshots/vertical.png">
+<img src="https://github.com/JakobMick/obsidian-file-indicators/blob/main/screenshots/vertical.png?raw=true">
 
 ## How to install
 
