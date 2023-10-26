@@ -1,4 +1,4 @@
-import { App, Platform, PluginSettingTab, Setting } from 'obsidian';
+import { App, PluginSettingTab, Setting } from 'obsidian';
 
 import FileIndicatorsPlugin from './main';
 import Indicator, { IndicatorShape } from './indicator';
@@ -13,14 +13,12 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
 	}
 
 	display(): void {
-		const { containerEl } = this;
-
-		containerEl.empty();
+        this.containerEl.empty();
 
         const listEl = createEl('div');
         listEl.addClass('indicator-list');
 
-        new Setting(containerEl)
+        new Setting(this.containerEl)
             .setName('Default color').addColorPicker(colorpicker => colorpicker
                 .setValue(this.plugin.settings.defaultColor)
                 .onChange(async (value) => {
@@ -28,7 +26,7 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}));
 
-        new Setting(containerEl)
+        new Setting(this.containerEl)
             .setName('Default shape')
             .addDropdown(dropdown => dropdown
                 .addOptions(IndicatorShape)
@@ -38,7 +36,7 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}));
 
-        new Setting(containerEl)
+        new Setting(this.containerEl)
         .setName('Indicators')
         .addButton(button => {
             button.setButtonText('Add new indicator')
@@ -61,7 +59,7 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
             });
         })
 
-        this.containerEl.appendChild(listEl)
+        this.containerEl.appendChild(listEl);
 
         this.plugin.settings.indicators.forEach((indicator, index) => {
             this.addIndicatorListItem(listEl, indicator, index);

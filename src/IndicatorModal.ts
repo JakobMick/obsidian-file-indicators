@@ -83,10 +83,6 @@ export default class IndicatorModal extends Modal {
                 const index = this.plugin.settings.indicators.findIndex((i) => i.dataPath == indicator.dataPath);
 
                 if(index >= 0 && this.indicator.dataPath != indicator.dataPath) {
-                    console.log(index >= 0 )
-                    console.log(this.indicator.dataPath != indicator.dataPath)
-                    console.log(this.indicator.dataPath)
-                    console.log(indicator.dataPath)
                     duplicateError.settingEl.addClass('indicator-modal-error--active');
                     return;
                 }

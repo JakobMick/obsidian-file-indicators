@@ -23,7 +23,7 @@ class Suggest<T> {
     containerEl.on(
       'mousemove',
       '.suggestion-item',
-      this.onSuggestionMouseover.bind(this)
+      this.onSuggestionMouseover.bind(this),
     );
 
     scope.register([], 'ArrowUp', (event) => {
