@@ -12,6 +12,10 @@ Right click on any file or folder and select `Add indicator`.
 
 **Or**
 
+Use the `Add indicator` or `Add indicator to active file` commands.
+
+**Or**
+
 Go to the `File indicator` plugin settings and select `Add indicator`.
 
 This way you can even set an indicator at root level:
