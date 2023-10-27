@@ -1,7 +1,7 @@
 {
 	"id": "file-indicators",
 	"name": "File indicators",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Add costum indicators to the file explorer.",
 	"author": "Jakob",
