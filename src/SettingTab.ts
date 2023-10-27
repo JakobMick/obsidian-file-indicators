@@ -1,7 +1,7 @@
 import { App, PluginSettingTab, Setting } from 'obsidian';
 
 import FileIndicatorsPlugin from './main';
-import Indicator, { IndicatorShape } from './indicator';
+import Indicator, { IndicatorShape, shapeTitleMap } from './indicator';
 import IndicatorModal, { IndicatorModalAction } from './IndicatorModal';
 
 export default class FileIndicatorsSettingTab extends PluginSettingTab {
@@ -29,10 +29,10 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
         new Setting(this.containerEl)
             .setName('Default shape')
             .addDropdown(dropdown => dropdown
-                .addOptions(IndicatorShape)
+                .addOptions(shapeTitleMap)
                 .setValue(this.plugin.settings.defaultShape)
-                .onChange(async (value) => {
-					this.plugin.settings.defaultShape = value as IndicatorShape;
+                .onChange(async (value: IndicatorShape) => {
+					this.plugin.settings.defaultShape = value;
 					await this.plugin.saveSettings();
 				}));
 
@@ -100,13 +100,13 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
         });
 
         setting.addDropdown(dropdown => dropdown
-            .addOptions(IndicatorShape)
+            .addOptions(shapeTitleMap)
             .setValue(indicator.shape)
-            .onChange(async (value) => {
+            .onChange(async (value: IndicatorShape) => {
                 this.plugin.removeIndicatorCSS(indicator);
 
                 if (index !== undefined) {
-                    this.plugin.settings.indicators[index].shape = value as IndicatorShape;
+                    this.plugin.settings.indicators[index].shape = value;
                     this.plugin.addIndicatorCSS(this.plugin.settings.indicators[index]);
                 }
 
