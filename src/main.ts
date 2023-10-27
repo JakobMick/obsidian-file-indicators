@@ -211,8 +211,6 @@ export default class FileIndicatorsPlugin extends Plugin {
 
     getIndicatorCSS(indicator: Indicator) {
         const shapeUrl = 'data:image/svg+xml,' + encodeURIComponent(getShapeSvg(indicator.shape));
-        console.log(indicator.shape  === IndicatorShape.CIRCLE)
-        console.log(getShapeSvg(IndicatorShape.CIRCLE))
         return `.tree-item-self[data-path='${indicator.dataPath}']:not([data-path='/'])>.tree-item-inner { padding-inline-start: calc(var(--indicator-size) + var(--size-2-3)); } .tree-item-self[data-path='${indicator.dataPath}']>.tree-item-inner:before { content: ""; -webkit-mask-image: url("${shapeUrl}"); mask-image: url("${shapeUrl}"); background-color: ${indicator.color}; }`;
     }
 }
