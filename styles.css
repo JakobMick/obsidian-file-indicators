@@ -21,6 +21,12 @@
     flex: 1;
 }
 
+.indicator-list-item input[type="color"], 
+.indicator-list-item select.dropdown {
+    flex: 0;
+    min-width: fit-content;
+}
+
 .indicator-modal-content {
     margin-block-start: 1em;
     margin-block-end: 0px;
