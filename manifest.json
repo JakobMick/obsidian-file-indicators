@@ -3,7 +3,7 @@
 	"name": "File indicators",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Add costum indicators to the file explorer.",
+	"description": "Add custom indicators to the file explorer.",
 	"author": "Jakob",
 	"isDesktopOnly": false
 }

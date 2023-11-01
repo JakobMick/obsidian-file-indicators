@@ -1,7 +1,7 @@
 {
 	"name": "obsidian-file-indicators",
 	"version": "1.0.0",
-	"description": "Add costum indicators to the file explorer.",
+	"description": "Add custom indicators to the file explorer.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",

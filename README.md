@@ -1,6 +1,6 @@
 # Obsidian File Indicators
 
-Add costum indicators to the file explorer.
+Add custom indicators to the file explorer.
 
 <img src="https://github.com/JakobMick/obsidian-file-indicators/blob/main/screenshots/horizontal.png?raw=true">
 
