@@ -15,8 +15,8 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
 	display(): void {
         this.containerEl.empty();
 
-        const listEl = createEl('div');
-        listEl.addClass('indicator-list');
+        const indicatorListEl = createEl('div');
+        indicatorListEl.addClass('indicator-list');
 
         new Setting(this.containerEl)
             .setName('Default color').addColorPicker(colorpicker => colorpicker
@@ -52,17 +52,17 @@ export default class FileIndicatorsSettingTab extends PluginSettingTab {
                     indicator, 
                     IndicatorModalAction.ADD, 
                     (indicator: Indicator) => {
-                        listEl.empty()
-                        this.loadIndicatorList(listEl);
+                        indicatorListEl.empty()
+                        this.loadIndicatorList(indicatorListEl);
                     },
                 ).open();
             });
         })
 
-        this.containerEl.appendChild(listEl);
+        this.containerEl.appendChild(indicatorListEl);
 
         this.plugin.settings.indicators.forEach((indicator, index) => {
-            this.addIndicatorListItem(listEl, indicator, index);
+            this.addIndicatorListItem(indicatorListEl, indicator, index);
         });
 	}
 
