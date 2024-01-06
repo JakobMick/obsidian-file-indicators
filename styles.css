@@ -2,53 +2,53 @@
     --indicator-size: 0.75em
 }
 
-.indicator-list {
+.fi-list {
     display: flex;
     flex-direction: column;
     padding: 0.75em 0;
 }
 
-.indicator-list-item {
+.fi-list-item {
     border-top: none;
 }
 
-.indicator-list-item .setting-item-info {
+.fi-list-item .setting-item-info {
     display: none;
 }
 
-.indicator-list-item input[type="text"], 
-.indicator-list-item .search-input-container {
+.fi-list-item input[type="text"], 
+.fi-list-item .search-input-container {
     flex: 1;
 }
 
-.indicator-list-item input[type="color"], 
-.indicator-list-item select.dropdown {
+.fi-list-item input[type="color"], 
+.fi-list-item select.dropdown {
     flex: 0;
     min-width: fit-content;
 }
 
-.indicator-modal-content {
+.fi-modal-content {
     margin-block-start: 1em;
     margin-block-end: 0px;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
 }
 
-.indicator-modal-error {
+.fi-modal-error {
     display: none;
     border-top: none;
 }
 
-.indicator-modal-error--active {
+.fi-modal-error--active {
     display: block;
 }
 
-.indicator-modal-error .setting-item-description {
+.fi-modal-error .setting-item-description {
     padding: 0px;
     color: var(--text-error);
 }
 
-.indicator-modal-buttons {
+.fi-modal-buttons {
     padding: 0px;
     border-top: none;
 }
