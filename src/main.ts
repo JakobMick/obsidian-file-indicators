@@ -2,19 +2,22 @@ import { Plugin } from 'obsidian';
 
 import { binaryInsert } from 'binary-insert';
 
-import Indicator, { getShapeSvg, IndicatorShape } from './indicator';
+import Indicator from './indicator';
 import IndicatorModal, { IndicatorModalAction } from './IndicatorModal';
 import FileIndicatorsSettingTab from './SettingTab';
+import { CustomShape, getShapeSvg } from './shape';
 
 interface FileIndicatorsSettings {
 	defaultColor: string;
-    defaultShape: IndicatorShape;
-    indicators: (Indicator)[]
+    defaultShape: string;
+    shapes: (CustomShape)[];
+    indicators: (Indicator)[];
 }
 
 const DEFAULT_SETTINGS: FileIndicatorsSettings = {
 	defaultColor: '#8A5CF5',
-    defaultShape: IndicatorShape.CIRCLE,
+    defaultShape: 'CIRCLE',
+    shapes: [],
     indicators: [],
 }
 
@@ -210,8 +213,19 @@ export default class FileIndicatorsPlugin extends Plugin {
     }
 
     getIndicatorCSS(indicator: Indicator) {
-        const shapeUrl = 'data:image/svg+xml,' + encodeURIComponent(getShapeSvg(indicator.shape));
+        const shapeUrl = 'data:image/svg+xml,' + encodeURIComponent(getShapeSvg(indicator.shape, this.settings.shapes));
         return `.tree-item-self[data-path='${indicator.dataPath}']:not([data-path='/'])>.tree-item-inner { padding-inline-start: calc(var(--indicator-size) + var(--size-2-3)); } .tree-item-self[data-path='${indicator.dataPath}']>.tree-item-inner:before { content: ""; -webkit-mask-image: url("${shapeUrl}"); mask-image: url("${shapeUrl}"); background-color: ${indicator.color}; }`;
+    }
+
+    async addShape(shape: CustomShape) {
+        binaryInsert(this.settings.shapes, shape, (a, b) => a.name.localeCompare(b.name));
+        await this.saveSettings();
+    }
+
+    async removeShape(shape: CustomShape) {
+        const index = this.settings.shapes.findIndex((i) => i.name == shape.name);
+        this.settings.shapes.remove(this.settings.shapes[index])
+        await this.saveSettings();
     }
 }
 

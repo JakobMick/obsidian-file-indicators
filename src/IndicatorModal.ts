@@ -1,8 +1,9 @@
 import { Modal, Setting } from 'obsidian';
 
 import FileIndicatorsPlugin from './main';
-import Indicator, { IndicatorShape, shapeTitleMap } from './indicator';
+import Indicator from './indicator';
 import { AbstractFileSuggest } from './suggest/AbstractFileSuggest';
+import { getShapeNames } from './shape';
 
 export enum IndicatorModalAction { ADD = 'Add', EDIT = 'Edit' }
 
@@ -38,8 +39,6 @@ export default class IndicatorModal extends Modal {
         
         const setting = new Setting(this.contentEl);
         setting.setClass('fi-list-item');
-        setting.setClass('indicator-list-item');
-        setting.setClass('indicator-modal-item');
 
         setting.addColorPicker(colorpicker => colorpicker
             .setValue(indicator.color)
@@ -53,9 +52,9 @@ export default class IndicatorModal extends Modal {
         })
 
         setting.addDropdown(dropdown => dropdown
-            .addOptions(shapeTitleMap)
-            .setValue(indicator.shape)
-            .onChange((value: IndicatorShape) => indicator.shape = value));
+            .addOptions(getShapeNames(this.plugin.settings.shapes))
+            .setValue(indicator.shape as string)
+            .onChange((value: string) => indicator.shape = value));
             
         const emptyError = new Setting(this.contentEl);
         emptyError.setDesc('Please set a path.');
