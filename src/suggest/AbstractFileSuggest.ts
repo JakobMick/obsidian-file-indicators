@@ -2,7 +2,7 @@
 
 import { TAbstractFile } from 'obsidian';
 
-import { TextInputSuggest } from './suggest';
+import { TextInputSuggest } from 'src/suggest';
 
 export class AbstractFileSuggest extends TextInputSuggest<TAbstractFile> {
   getSuggestions(inputStr: string): TAbstractFile[] {

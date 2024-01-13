@@ -1,12 +1,10 @@
 import { App, PluginSettingTab, Setting, addIcon } from 'obsidian';
 
-import FileIndicatorsPlugin from './main';
-import Indicator from './indicator';
-import IndicatorModal, { IndicatorModalAction } from './IndicatorModal';
-import ShapeModal from './ShapeModal';
-import { CustomShape, getShapeNames } from './shape';
+import FileIndicatorsPlugin from 'src/main';
+import { Indicator, IndicatorModal, IndicatorModalAction } from 'src/indicators';
+import { CustomShape, ShapeModal, getShapeNames } from 'src/shapes';
 
-export default class FileIndicatorsSettingTab extends PluginSettingTab {
+export class FileIndicatorsSettingTab extends PluginSettingTab {
 	plugin: FileIndicatorsPlugin;
 
 	constructor(app: App, plugin: FileIndicatorsPlugin) {

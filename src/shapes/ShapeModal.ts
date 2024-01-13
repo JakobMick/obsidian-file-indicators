@@ -1,9 +1,9 @@
 import { Modal, Setting } from 'obsidian';
 
-import FileIndicatorsPlugin from './main';
-import Shape, { CustomShape } from './shape';
+import FileIndicatorsPlugin from 'src/main';
+import { Shape, CustomShape } from 'src/shapes';
 
-export default class ShapeModal extends Modal {
+export class ShapeModal extends Modal {
 	plugin: FileIndicatorsPlugin;
     onSubmit: (shape: Shape) => void ;
 

@@ -2,24 +2,9 @@ import { Plugin } from 'obsidian';
 
 import { binaryInsert } from 'binary-insert';
 
-import Indicator from './indicator';
-import IndicatorModal, { IndicatorModalAction } from './IndicatorModal';
-import FileIndicatorsSettingTab from './SettingTab';
-import { CustomShape, getShapeSvg } from './shape';
-
-interface FileIndicatorsSettings {
-	defaultColor: string;
-    defaultShape: string;
-    shapes: (CustomShape)[];
-    indicators: (Indicator)[];
-}
-
-const DEFAULT_SETTINGS: FileIndicatorsSettings = {
-	defaultColor: '#8A5CF5',
-    defaultShape: 'CIRCLE',
-    shapes: [],
-    indicators: [],
-}
+import { Indicator, IndicatorModal, IndicatorModalAction } from 'src/indicators';
+import { FileIndicatorsSettings, DEFAULT_SETTINGS, FileIndicatorsSettingTab } from 'src/settings';
+import { CustomShape, getShapeSvg } from 'src/shapes';
 
 export default class FileIndicatorsPlugin extends Plugin {
 	settings: FileIndicatorsSettings;

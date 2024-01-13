@@ -1,13 +1,13 @@
 import { Modal, Setting } from 'obsidian';
 
-import FileIndicatorsPlugin from './main';
-import Indicator from './indicator';
-import { AbstractFileSuggest } from './suggest/AbstractFileSuggest';
-import { getShapeNames } from './shape';
+import FileIndicatorsPlugin from 'src/main';
+import { Indicator } from 'src/indicators';
+import { getShapeNames } from 'src/shapes';
+import { AbstractFileSuggest } from 'src/suggest';
 
 export enum IndicatorModalAction { ADD = 'Add', EDIT = 'Edit' }
 
-export default class IndicatorModal extends Modal {
+export class IndicatorModal extends Modal {
 	plugin: FileIndicatorsPlugin;
     indicator: Indicator;
     action: IndicatorModalAction;
