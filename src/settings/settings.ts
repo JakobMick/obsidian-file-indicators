@@ -3,7 +3,7 @@ import { CustomShape } from 'src/shapes';
 
 export interface FileIndicatorsSettings {
 	defaultColor: string;
-    defaultShape: string;
+    defaultShape: string | number;
     shapes: (CustomShape)[];
     indicators: (Indicator)[];
 }

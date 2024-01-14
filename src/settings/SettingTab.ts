@@ -3,13 +3,19 @@ import { App, PluginSettingTab, Setting, addIcon } from 'obsidian';
 import FileIndicatorsPlugin from 'src/main';
 import { Indicator, IndicatorModal, IndicatorModalAction } from 'src/indicators';
 import { CustomShape, ShapeModal, getShapeNames } from 'src/shapes';
+import { DEFAULT_SETTINGS } from 'src/settings';
 
 export class FileIndicatorsSettingTab extends PluginSettingTab {
 	plugin: FileIndicatorsPlugin;
+    defaultShapeEL: Setting;
+    shapeListEl: HTMLElement;
+    indicatorListEl: HTMLElement;
 
 	constructor(app: App, plugin: FileIndicatorsPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
+        this.shapeListEl = createEl('div');
+        this.indicatorListEl = createEl('div');
 	}
 
 	display(): void {
@@ -23,19 +29,11 @@ export class FileIndicatorsSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}));
 
-        new Setting(this.containerEl)
-            .setName('Default shape')
-            .addDropdown(dropdown => dropdown
-                .addOptions(getShapeNames(this.plugin.settings.shapes))
-                .setValue(this.plugin.settings.defaultShape)
-                .onChange(async (value: string) => {
-					this.plugin.settings.defaultShape = value;
-					await this.plugin.saveSettings();
-				}));
+        this.defaultShapeEL = new Setting(this.containerEl);
+        this.loadDefaultShape();
 
-        const shapeListEl = createEl('div');
-        shapeListEl.addClass('fi-list');
-        shapeListEl.addClass('shape-list');
+        this.shapeListEl.addClass('fi-list');
+        this.shapeListEl.addClass('shape-list');
 
         new Setting(this.containerEl)
         .setName('Custom shapes')
@@ -46,20 +44,19 @@ export class FileIndicatorsSettingTab extends PluginSettingTab {
                 new ShapeModal(
                     this.plugin, 
                     () => {
-                        shapeListEl.empty()
-                        this.loadShapeList(shapeListEl);
+                        this.shapeListEl.empty()
+                        this.loadShapeList();
+                        this.loadDefaultShape();
                     },
                 ).open();
             });
         })
 
-        this.containerEl.appendChild(shapeListEl);
+        this.containerEl.appendChild(this.shapeListEl);
+        this.loadShapeList();
 
-        this.loadShapeList(shapeListEl);
-
-        const indicatorListEl = createEl('div');
-        indicatorListEl.addClass('fi-list');
-        indicatorListEl.addClass('indicator-list');
+        this.indicatorListEl.addClass('fi-list');
+        this.indicatorListEl.addClass('indicator-list');
 
         new Setting(this.containerEl)
         .setName('Indicators')
@@ -77,30 +74,42 @@ export class FileIndicatorsSettingTab extends PluginSettingTab {
                     indicator, 
                     IndicatorModalAction.ADD, 
                     () => {
-                        indicatorListEl.empty()
-                        this.loadIndicatorList(indicatorListEl);
+                        this.indicatorListEl.empty()
+                        this.loadIndicatorList();
                     },
                 ).open();
             });
         })
 
-        this.containerEl.appendChild(indicatorListEl);
+        this.containerEl.appendChild(this.indicatorListEl);
 
-        this.loadIndicatorList(indicatorListEl);
+        this.loadIndicatorList();
 	}
 
-    loadIndicatorList(containerEl: HTMLElement) {
+    loadDefaultShape() {
+        this.defaultShapeEL.clear()
+        .setName('Default shape')
+        .addDropdown(dropdown => dropdown
+            .addOptions(getShapeNames(this.plugin.settings.shapes))
+            .setValue(this.plugin.settings.defaultShape.toString())
+            .onChange(async (value: string) => {
+                this.plugin.settings.defaultShape = value;
+                await this.plugin.saveSettings();
+            }));
+    }
+
+    loadIndicatorList() {
+        this.indicatorListEl.replaceChildren();
         this.plugin.settings.indicators.forEach((indicator, index) => {
-            this.addIndicatorListItem(containerEl, indicator, index);
+            this.addIndicatorListItem(indicator, index);
         });
     }
 
     addIndicatorListItem(
-        containerEl: HTMLElement, 
         indicator: Indicator, 
         index: number | undefined = undefined,
     ) {
-        const setting = new Setting(containerEl);
+        const setting = new Setting(this.indicatorListEl);
         setting.setClass('fi-list-item');
 
         setting.addColorPicker(colorpicker => colorpicker
@@ -147,17 +156,15 @@ export class FileIndicatorsSettingTab extends PluginSettingTab {
         });
     }
 
-    loadShapeList(containerEl: HTMLElement) {
+    loadShapeList() {
+        this.shapeListEl.replaceChildren();
         this.plugin.settings.shapes.forEach((shape) => {
-            this.addShapeListItem(containerEl, shape);
+            this.addShapeListItem(shape);
         });
     }
 
-    addShapeListItem(
-        containerEl: HTMLElement, 
-        shape: CustomShape,
-    ) {
-        const setting = new Setting(containerEl);
+    addShapeListItem(shape: CustomShape) {
+        const setting = new Setting(this.shapeListEl);
         setting.setClass('fi-list-item');
 
         const id = 'file-indicators-' + shape.id;
@@ -183,6 +190,18 @@ export class FileIndicatorsSettingTab extends PluginSettingTab {
 
         setting.addExtraButton(button => {
             button.onClick(async () => {
+                const conflictingIndicators: Indicator[] = this.plugin.settings.indicators.filter((indicator) => indicator.shape == shape.id);
+
+                if(conflictingIndicators.length > 0) {
+                    conflictingIndicators.forEach(async (indicator) => await this.plugin.removeIndicator(indicator));
+                    this.loadIndicatorList();
+                }
+
+                if(this.plugin.settings.defaultShape == shape.id) {
+                    this.plugin.settings.defaultShape = DEFAULT_SETTINGS.defaultShape;
+                    this.loadDefaultShape();
+                }
+                
                 setting.clear();
                 setting.settingEl.remove();
                 await this.plugin.removeShape(shape);
