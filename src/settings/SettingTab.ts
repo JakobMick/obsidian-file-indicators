@@ -47,6 +47,7 @@ export class FileIndicatorsSettingTab extends PluginSettingTab {
                         this.shapeListEl.empty()
                         this.loadShapeList();
                         this.loadDefaultShape();
+                        this.loadIndicatorList();
                     },
                 ).open();
             });
