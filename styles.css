@@ -8,6 +8,10 @@
     padding: 0.75em 0;
 }
 
+.fi-list:empty {
+    padding: 0;
+}
+
 .fi-list-item {
     border-top: none;
 }
