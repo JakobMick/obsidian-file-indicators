@@ -17,11 +17,11 @@ export class ShapeModal extends Modal {
     }
 
 	onOpen() {
-        const id = this.plugin.settings.shapes.reduce(
+        const id = this.plugin.settings.shapes.length > 0 ? this.plugin.settings.shapes.reduce(
             (prev, current) => (prev && prev.id > current.id) 
                 ? prev 
                 : current
-            ).id + 1;
+            ).id + 1 : 1;
         const shape: CustomShape = {
             id: id,
             name: 'Custom shape #' + id,
