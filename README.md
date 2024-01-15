@@ -4,7 +4,7 @@ Add custom indicators to the file explorer.
 
 <img src="https://github.com/JakobMick/obsidian-file-indicators/blob/main/screenshots/horizontal.png?raw=true">
 
-This plugin lets you add indicators in custom colors and different shapes to all your files and folders.
+This plugin lets you add indicators in custom shapes and colors to all your files and folders.
 
 ## How to use
 
