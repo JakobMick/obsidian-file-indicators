@@ -3,7 +3,7 @@ import { Shape, defaultShapes } from 'src/shapes';
 
 export function getShapeNames(shapes: Shape[]): Record<string, string> {
 
-    const titles: Record<string, string> = {} as Record<string, string>;
+    const titles: Record<string, string> = {};
 
     [...shapes, ...defaultShapes].forEach((shape) => {
         titles[shape.id] = shape.name
@@ -14,7 +14,7 @@ export function getShapeNames(shapes: Shape[]): Record<string, string> {
 
 export function getShapeSvgs(shapes: Shape[]): Record<string, string> {
 
-    const svgs: Record<string, string> = {} as Record<string, string>;
+    const svgs: Record<string, string> = {};
 
     [...shapes, ...defaultShapes].forEach((shape) => {
         svgs[shape.id] = shape.svg
