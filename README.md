@@ -30,7 +30,7 @@ Not all SVGs will work. Some SVGs might be correctly displayed in the settings, 
 
 To add custom shapes, go to the `File indicators` plugin settings and select `Add new shape`.
 
-Deleting a custom shape will also delete all indicators using the shape.
+Deleting a custom shape will also delete all indicators using the shape. If the deleted shape was used as the default shape, the default `Circle` shape will be set as the new default.
 
 ## Custom CSS
 
