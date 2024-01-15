@@ -16,11 +16,21 @@ Use the `Add indicator` or `Add indicator to active file` commands.
 
 **Or**
 
-Go to the `File indicator` plugin settings and select `Add indicator`.
+Go to the `File indicators` plugin settings and select `Add new indicator`.
 
 This way you can even set an indicator at root level:
 
 <img src="https://github.com/JakobMick/obsidian-file-indicators/blob/main/screenshots/vertical.png?raw=true">
+
+## Custom shapes
+
+Custom shapes must be provided as SVGs. The shapes will only be displayed in the selected color. All colors from the SVG will be ignored.
+
+Not all SVGs will work. Some SVGs might be correctly displayed in the settings, but will not work as indicators. Or the other way around.
+
+To add custom shapes, go to the `File indicators` plugin settings and select `Add new shape`.
+
+Deleting a custom shape will also delete all indicators using the shape.
 
 ## How to install
 
