@@ -36,7 +36,7 @@ Deleting a custom shape will also delete all indicators using the shape. If the 
 
 Because this plugin uses CSS to display the indicators it might conflict with existing CSS snippets or other plugins regarding the file explorer.
 
-If you want to override the CSS of the `File indicators` plugin, be warned that it is subject to change and will probably get some breaking changes in the future. Stable CSS variables are planed for the next major version (2.0.0).
+If you want to override the CSS of the `File indicators` plugin, be warned that it is subject to change and will probably get some breaking changes in the future. Stable CSS variables are planned for the next major version (2.0.0).
 
 ## How to install
 
